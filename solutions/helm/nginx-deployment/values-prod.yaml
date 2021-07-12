@@ -1,5 +1,5 @@
 namespace:
-  name: prod-us 
+  name: produs 
  
 service:
   port: 80
