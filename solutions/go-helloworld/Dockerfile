@@ -1,4 +1,4 @@
-FROM golang:alpine
+FROM balenalib/raspberry-pi-alpine-golang:latest
 
 WORKDIR /go/src/app
 
