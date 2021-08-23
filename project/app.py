@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
+from datetime import datetime
 
 import sqlite3
 import logging
@@ -31,7 +32,7 @@ def index():
     connection.close()
     Flask.dbcount += 1
     ## log line
-    app.logger.info('Connection successful')
+    app.logger.info('%s, Connection successful',datetime.now())
 
     return render_template('index.html', posts=posts)
 
@@ -45,7 +46,7 @@ def healthz():
     )
 
     ## log line
-    app.logger.info('Healthz request successful')
+    app.logger.info('%s, Healthz request successful',datetime.now())
     return response
 
 # Define the /metric endpoint
@@ -62,7 +63,7 @@ def metrics():
     )
 
     ## log line
-    app.logger.info('Metrics request successful')
+    app.logger.info('%s, Metrics request successful',datetime.now())
     return response
 
 # Define how each individual article is rendered 
@@ -73,12 +74,12 @@ def post(post_id):
     Flask.dbcount += 1
     if post is None:
       ## log line
-      app.logger.info('A non-existing article is accessed.')
+      app.logger.info('%s, A non-existing article is accessed.', datetime.now())
 
       return render_template('404.html'), 404
     else:
       ## log line
-      app.logger.info('Found article titled ' + post['title'])
+      app.logger.info('%s, Found article titled ' + post['title'],datetime.now())
 
       return render_template('post.html', post=post)
 
@@ -86,7 +87,7 @@ def post(post_id):
 @app.route('/about')
 def about():
     ## log line
-    app.logger.info('About page retrieved.')
+    app.logger.info('%s, About page retrieved.',datetime.now())
 
     return render_template('about.html')
 
@@ -100,7 +101,7 @@ def create():
         if not title:
             flash('Title is required!')
             ## log line
-            app.logger.info('Title is required')
+            app.logger.info('%s, Title is required',datetime.now())
         else:
             connection = get_db_connection()
             connection.execute('INSERT INTO posts (title, content) VALUES (?, ?)',
@@ -110,7 +111,7 @@ def create():
             Flask.dbcount += 1
 
             ## log line
-            app.logger.info('New article created titled' + title)
+            app.logger.info('%s, New article created titled' + title,datetime.now())
             return redirect(url_for('index'))
 
     return render_template('create.html')
