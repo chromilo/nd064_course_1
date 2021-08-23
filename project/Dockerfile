@@ -3,7 +3,7 @@ LABEL maintainer="Chromilo Amin"
 
 COPY . /app
 WORKDIR /app
-RUN pip install -r requirements.txt
+RUN pip install -r /project/requirements.txt
 EXPOSE 3111
 
 # command to run on container start
